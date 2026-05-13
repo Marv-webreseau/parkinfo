@@ -1,12 +1,12 @@
 // ============================================
 // FICHIER : src/App.tsx
 // RÔLE : Point d'entrée principal de l'app
-// Le header mobile est géré ici proprement
+// HashRouter utilisé pour GitHub Pages
+// (évite les erreurs 404 au rechargement)
 // ============================================
 
-import { useState } from 'react'
-import { useEffect } from 'react'
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { HashRouter, Routes, Route, Navigate } from 'react-router-dom'
 
 import Dashboard from './pages/Dashboard'
 import Equipements from './pages/Equipements'
@@ -17,7 +17,6 @@ import Sidebar, { SidebarContent } from './components/Sidebar'
 import { chargerDonneesDemoSiVide } from './data/storage'
 
 function App() {
-  // État pour ouvrir/fermer le menu mobile
   const [mobileOpen, setMobileOpen] = useState(false)
 
   useEffect(() => {
@@ -25,13 +24,13 @@ function App() {
   }, [])
 
   return (
-    <BrowserRouter>
+    <HashRouter>
       <div className="flex h-screen bg-slate-50 overflow-hidden">
 
         {/* Sidebar desktop */}
         <Sidebar />
 
-        {/* Overlay mobile sombre */}
+        {/* Fond sombre mobile */}
         {mobileOpen && (
           <div
             className="lg:hidden fixed inset-0 bg-black/40 z-40 backdrop-blur-sm"
@@ -39,7 +38,7 @@ function App() {
           />
         )}
 
-        {/* Sidebar mobile qui glisse */}
+        {/* Sidebar mobile */}
         <aside className={`lg:hidden fixed top-0 left-0 h-full w-72 bg-white shadow-xl z-50
                           transform transition-transform duration-300 ease-in-out
                           ${mobileOpen ? 'translate-x-0' : '-translate-x-full'}`}>
@@ -49,15 +48,9 @@ function App() {
         {/* Zone principale */}
         <div className="flex-1 flex flex-col overflow-hidden">
 
-          {/* ====================================
-              HEADER MOBILE — visible sur mobile
-              Logo à gauche, hamburger à droite
-              ==================================== */}
+          {/* Header mobile */}
           <header className="lg:hidden flex items-center justify-between
-                             px-4 h-14 bg-white border-b border-slate-200 shadow-sm
-                             flex-shrink-0">
-
-            {/* Logo + Nom */}
+                             px-4 h-14 bg-white border-b border-slate-200 shadow-sm flex-shrink-0">
             <div className="flex items-center gap-2.5">
               <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
                 <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -69,18 +62,14 @@ function App() {
                 <p className="text-xs text-slate-400 leading-tight">Gestion de parc IT</p>
               </div>
             </div>
-
-            {/* Bouton hamburger */}
             <button
               onClick={() => setMobileOpen(true)}
               className="p-2 rounded-lg text-slate-600 hover:bg-slate-100 hover:text-slate-800"
-              aria-label="Ouvrir le menu"
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
               </svg>
             </button>
-
           </header>
 
           {/* Contenu des pages */}
@@ -97,7 +86,7 @@ function App() {
 
         </div>
       </div>
-    </BrowserRouter>
+    </HashRouter>
   )
 }
 

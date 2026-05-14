@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>ParkInfo</title>
+    <script>
+      var path = window.location.pathname.replace('/parkinfo', '');
+      window.location.replace('/parkinfo/?path=' + encodeURIComponent(path));
+    </script>
+  </head>
+  <body></body>
+</html>

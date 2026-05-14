@@ -7,12 +7,14 @@
 import { useState } from 'react'
 
 // ============================================
-// IDENTIFIANTS — modifiez ici si nécessaire
+// UTILISATEURS AUTORISÉS
+// Ajoutez autant d'utilisateurs que vous voulez
 // ============================================
-const IDENTIFIANTS = {
-  login: 'dsi',
-  motDePasse: 'parkinfo2026',
-}
+const UTILISATEURS_AUTORISES = [
+  { login: 'dsi',        motDePasse: 'parkinfo2026', nom: 'Directeur SI' },
+  { login: 'technicien', motDePasse: 'tech2026',     nom: 'Technicien IT' },
+  { login: 'admin',      motDePasse: 'admin2026',    nom: 'Administrateur' },
+]
 
 export default function Login({ onLogin }: { onLogin: () => void }) {
   const [login, setLogin]           = useState('')
@@ -21,10 +23,25 @@ export default function Login({ onLogin }: { onLogin: () => void }) {
   const [chargement, setChargement] = useState(false)
   const [voir, setVoir]             = useState(false)
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    setErreur('')
-    setChargement(true)
+ const handleSubmit = (e: React.FormEvent) => {
+  e.preventDefault()
+  setErreur('')
+  setChargement(true)
+
+  setTimeout(() => {
+    const utilisateur = UTILISATEURS_AUTORISES.find(
+      u => u.login === login && u.motDePasse === motDePasse
+    )
+    if (utilisateur) {
+      localStorage.setItem('parkinfo_session', 'connecte')
+      localStorage.setItem('parkinfo_user', utilisateur.nom)
+      onLogin()
+    } else {
+      setErreur('Identifiant ou mot de passe incorrect.')
+    }
+    setChargement(false)
+  }, 800)
+}
 
     // Simulation d'un délai de connexion
     setTimeout(() => {

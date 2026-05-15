@@ -1,7 +1,6 @@
 // ============================================
 // FICHIER : src/pages/Login.tsx
 // RÔLE : Page de connexion sécurisée
-// Identifiants : dsi / parkinfo2026
 // ============================================
 
 import { useState } from 'react'
@@ -23,34 +22,19 @@ export default function Login({ onLogin }: { onLogin: () => void }) {
   const [chargement, setChargement] = useState(false)
   const [voir, setVoir]             = useState(false)
 
- const handleSubmit = (e: React.FormEvent) => {
-  e.preventDefault()
-  setErreur('')
-  setChargement(true)
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    setErreur('')
+    setChargement(true)
 
-  setTimeout(() => {
-    const utilisateur = UTILISATEURS_AUTORISES.find(
-      u => u.login === login && u.motDePasse === motDePasse
-    )
-    if (utilisateur) {
-      localStorage.setItem('parkinfo_session', 'connecte')
-      localStorage.setItem('parkinfo_user', utilisateur.nom)
-      onLogin()
-    } else {
-      setErreur('Identifiant ou mot de passe incorrect.')
-    }
-    setChargement(false)
-  }, 800)
-}
-
-    // Simulation d'un délai de connexion
     setTimeout(() => {
-      if (
-        login === IDENTIFIANTS.login &&
-        motDePasse === IDENTIFIANTS.motDePasse
-      ) {
-        // Enregistre la session
+      // Cherche l'utilisateur dans la liste
+      const utilisateur = UTILISATEURS_AUTORISES.find(
+        u => u.login === login && u.motDePasse === motDePasse
+      )
+      if (utilisateur) {
         localStorage.setItem('parkinfo_session', 'connecte')
+        localStorage.setItem('parkinfo_user', utilisateur.nom)
         onLogin()
       } else {
         setErreur('Identifiant ou mot de passe incorrect.')
@@ -63,7 +47,6 @@ export default function Login({ onLogin }: { onLogin: () => void }) {
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900
                     flex items-center justify-center p-4">
 
-      {/* Carte de connexion */}
       <div className="w-full max-w-md fade-in">
 
         {/* Logo */}
@@ -127,7 +110,6 @@ export default function Login({ onLogin }: { onLogin: () => void }) {
                              focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
                              bg-white text-slate-800 placeholder-slate-400"
                 />
-                {/* Bouton voir/cacher mot de passe */}
                 <button
                   type="button"
                   onClick={() => setVoir(!voir)}
@@ -183,7 +165,6 @@ export default function Login({ onLogin }: { onLogin: () => void }) {
           </form>
         </div>
 
-        {/* Pied de page */}
         <p className="text-center text-blue-300 text-xs mt-6">
           ParkInfo v1.0 — Accès réservé DSI
         </p>
